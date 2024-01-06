@@ -22,7 +22,7 @@ data "azurerm_kubernetes_cluster" "example" {
 }
 
 provider "kubernetes" {
- // config_path = "${path.module}/kubeconfig"
+  // config_path = "${path.module}/kubeconfig"
 
   host                   = data.azurerm_kubernetes_cluster.example.kube_config.0.host
   client_certificate     = base64decode(data.azurerm_kubernetes_cluster.example.kube_config.0.client_certificate)
