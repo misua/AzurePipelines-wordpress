@@ -37,59 +37,24 @@ resource "azurerm_kubernetes_cluster" "exampleAKScluster" {
 }
 
 resource "local_file" "kubeconfig" {
-  filename = "kubeconfig"
-  content  = azurerm_kubernetes_cluster.exampleAKScluster.kube_config_raw
+    filename = "kubeconfig"
+    content  = azurerm_kubernetes_cluster.exampleAKScluster.kube_config_raw
 }
 
-// Horizontal Pod Autoscaler (HPA) creation for pods scaling
-# resource "kubernetes_horizontal_pod_autoscaler" "Sardaukar" {
-#   metadata {
-#     name      = "my-hpa"
-#     namespace = azurerm_kubernetes_cluster.exampleAKScluster.name
-#   }
 
-#   spec {
-#     // Scale target reference for the HPA
-#     scale_target_ref {
-#       api_version = "apps/v1"
-#       kind = "Deployment"
-#       name = "my-deployment"
-#     }
-
-#     // Minimum and maximum replicas for scaling
-#     min_replicas = 1
-#     max_replicas = 5
-
-#     // Metric configuration for scaling
-#     metric {
-#       type = "Resource"
-#       resource {
-#         name                       = "cpu"
-#         target {
-#           type               = "Utilization"
-#           average_utilization = 50
-
-#         }
-#       }
-#     }
-#   }
-# }
-
-
-resource "kubernetes_horizontal_pod_autoscaler" "Sardaukar" {
+resource "kubernetes_horizontal_pod_autoscaler_v2" "example" {
   metadata {
-    name      = "my-hpa"
-    namespace = azurerm_kubernetes_cluster.exampleAKScluster.name
+    name = "test"
   }
 
   spec {
-    min_replicas = 1
-    max_replicas = 5
+    min_replicas = 50
+    max_replicas = 100
 
     scale_target_ref {
-      api_version = "apps/v2beta2"
-      kind        = "Deployment"
-      name        = "MyApp"
+      api_version = "apps/v2"
+      kind = "Deployment"
+      name = "MyApp"
     }
 
     behavior {
@@ -125,22 +90,3 @@ resource "kubernetes_horizontal_pod_autoscaler" "Sardaukar" {
     }
   }
 }
-
-# // Cluster Autoscaler creation for nodes scaling
-# resource "kubernetes_cluster_autoscaler" "Harkonnen" {
-#   metadata {
-#     name      = "my-cluster-autoscaler"
-#     namespace = azurerm_kubernetes_cluster.exampleAKScluster.kubernetes_cluster_name
-#   }
-
-#   spec {
-#     // Scale down utilization threshold
-#     scale_down_utilization_threshold = 0.5
-
-#     // Scale down settings
-#     scale_down_non_empty_requests_enabled = false
-#     scale_down_delay_after_add            = "5m"
-#     scale_down_delay_after_delete         = "10m"
-#     scale_down_delay_after_failure        = "3m"
-#   }
-# }
