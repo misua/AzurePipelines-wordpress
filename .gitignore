@@ -32,3 +32,14 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+# Ignore large files
+*.iso
+*.zip
+*.gz
+*.tar.gz
+*.rar
+*.7z
+*.dmg
+*.exe
+*.bin
+*.jar
