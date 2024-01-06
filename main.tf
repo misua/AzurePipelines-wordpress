@@ -13,23 +13,19 @@ resource "azurerm_kubernetes_cluster" "exampleAKScluster" {
 
   // Default node pool configuration
   default_node_pool {
-    name       = "default"
-    node_count = 1
+    name                = "default"
+    node_count          = 1
     enable_auto_scaling = true
     min_count           = 1
-    max_count           = 5 
-    vm_size    = "Standard_B2s"
+    max_count           = 5
+    vm_size             = "Standard_B2s"
   }
 
   // Service principal configuration for AKS cluster
-  # service_principal {
-
-  #     client_id     = var.client_id
-  #     client_secret = var.secrets
-  # }
   identity {
     type = "SystemAssigned"
   }
+
   // Tags for the AKS cluster
   tags = {
     environment = "dev"
@@ -37,10 +33,9 @@ resource "azurerm_kubernetes_cluster" "exampleAKScluster" {
 }
 
 resource "local_file" "kubeconfig" {
-    filename = "kubeconfig"
-    content  = azurerm_kubernetes_cluster.exampleAKScluster.kube_config_raw
+  filename = "kubeconfig"
+  content  = azurerm_kubernetes_cluster.exampleAKScluster.kube_config_raw
 }
-
 
 resource "kubernetes_horizontal_pod_autoscaler_v2" "example" {
   metadata {
@@ -53,8 +48,8 @@ resource "kubernetes_horizontal_pod_autoscaler_v2" "example" {
 
     scale_target_ref {
       api_version = "apps/v2"
-      kind = "Deployment"
-      name = "MyApp"
+      kind        = "Deployment"
+      name        = "MyApp"
     }
 
     behavior {

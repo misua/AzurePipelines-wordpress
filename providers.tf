@@ -6,26 +6,16 @@ provider "azurerm" {
   features {}
 }
 
-
-# provider "kubernetes" {
-#   host                   = azurerm_kubernetes_cluster.exampleAKScluster.kube_config.0.host
-#   client_certificate     = base64decode(azurerm_kubernetes_cluster.exampleAKScluster.kube_config.0.client_certificate)
-#   client_key             = base64decode(azurerm_kubernetes_cluster.exampleAKScluster.kube_config.0.client_key)
-#   cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.exampleAKScluster.kube_config.0.cluster_ca_certificate)
-#   config_path = "kubeconfig"
-# }
-
-
 data "azurerm_kubernetes_cluster" "example" {
   name                = azurerm_kubernetes_cluster.exampleAKScluster.name
   resource_group_name = azurerm_resource_group.Arrakis.name
 }
 
 provider "kubernetes" {
-  // config_path = "${path.module}/kubeconfig"
-
   host                   = data.azurerm_kubernetes_cluster.example.kube_config.0.host
   client_certificate     = base64decode(data.azurerm_kubernetes_cluster.example.kube_config.0.client_certificate)
   client_key             = base64decode(data.azurerm_kubernetes_cluster.example.kube_config.0.client_key)
   cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.example.kube_config.0.cluster_ca_certificate)
 }
+
+
