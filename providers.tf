@@ -1,5 +1,8 @@
 provider "azurerm" {
-    saved in text file for now
+  subscription_id = "use your own creds"
+  tenant_id       = "use your own creds"
+  client_id       = "use your own creds"
+  client_secret   = "use your own creds"
   features {}
 }
 

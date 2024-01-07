@@ -1,4 +1,3 @@
-// Deployment of WordPress
 resource "kubernetes_deployment" "wordpress" {
   metadata {
     name = "wordpress"
@@ -38,10 +37,25 @@ resource "kubernetes_deployment" "wordpress" {
           port {
             container_port = 80
           }
+
+          volume_mount {
+            name       = "wordpress-persistent-storage"
+            mount_path = "/var/www/html"
+          }
+        }
+
+        volume {
+          name = "wordpress-persistent-storage"
+          persistent_volume_claim {
+            claim_name = kubernetes_persistent_volume_claim_v1.example.metadata[0].name
+          }
+
         }
       }
     }
   }
+
+
 
   depends_on = [
     kubernetes_persistent_volume_claim_v1.example,

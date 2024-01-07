@@ -1,6 +1,18 @@
+resource "kubernetes_storage_class_v1" "example" {
+  metadata {
+    name = "example-storage-class"
+  }
+  storage_provisioner = "kubernetes.io/azure-disk"
+  reclaim_policy      = "Retain" # Added missing attribute
+  parameters = {
+    type = "pd-standard"
+  }
+  #mount_options = ["file_mode=0700", "dir_mode=0777", "mfsymlinks", "uid=1000", "gid=1000", "nobrl", "cache=none"]
+}
+
 resource "kubernetes_persistent_volume_claim_v1" "example" {
   metadata {
-    name = "exampleclaimname"
+    name = "example-claim-name"
   }
   spec {
     access_modes = ["ReadWriteMany"]
@@ -9,13 +21,13 @@ resource "kubernetes_persistent_volume_claim_v1" "example" {
         storage = "1Gi"
       }
     }
-    volume_name = "${kubernetes_persistent_volume_v1.example.metadata.0.name}"
+    storage_class_name = kubernetes_storage_class_v1.example.metadata.0.name
   }
 }
 
 resource "kubernetes_persistent_volume_v1" "example" {
   metadata {
-    name = "examplevolumename"
+    name = "example-volume-name"
   }
   spec {
     capacity = {
@@ -27,9 +39,9 @@ resource "kubernetes_persistent_volume_v1" "example" {
         pd_name = "test-123"
       }
     }
+    storage_class_name = kubernetes_storage_class_v1.example.metadata.0.name
   }
 }
-
 
 resource "kubernetes_deployment" "mysql" {
   metadata {
@@ -71,6 +83,7 @@ resource "kubernetes_deployment" "mysql" {
   }
 
   depends_on = [
+    kubernetes_storage_class_v1.example,
     kubernetes_persistent_volume_claim_v1.example,
     kubernetes_persistent_volume_v1.example
   ]
