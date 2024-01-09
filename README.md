@@ -11,7 +11,7 @@ This is an all Terraform to deploy the ff:
 - wordpress svc,mysql svc and ingress LB
 ---  
 
-
+- the azp-agent-in-docker/ - is a microsoft agent/runner,built by podman, as my request didnt get approved for parrallelism (required by azure pipelines)
 
 
 ```replace credentials in provider.tf using your own```
