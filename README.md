@@ -8,22 +8,24 @@ This is an all Terraform to deploy the ff:
 - A pv & pvc inside the cluster
 - wordpress w/ volume_mounts and using pvc (for /var/www/html)
 - Mysql DB for wordpress deployment use
-- wordpress svc,mysql svc and ingress LB
----  
-
+- wordpress svc,mysql svc and ingress LB  
 - the azp-agent-in-docker/ - is a microsoft agent/runner,built by podman, as my request didnt get approved for parrallelism (required by azure pipelines)
 
 ---
 
 ```replace credentials in provider.tf using your own```
 
-
+---
 ```build dockerfile```
 - podman build -t "azp-agent:linux1" --file "azp-agent.linux.dockerfile" .
 - podman run -e AZP_URL="https://dev.azure.com/charlice/" -e AZP_TOKEN="mjtwprakc7g4ca2xbvoiof4se42m222kgeesdxxxrraq2kcr2u6q" -e AZP_POOL="Default" -e AZP_AGENT_NAME="Docker Agent - Linux" --name "azp-agent-linux1" azp-agent:linux1
 
 ---
+``` To delete cluster faster for quick tests, use az cli```
 
+``az aks delete --name myAKSCluster --resource-group myResourceGroup --yes --no-wait``
+
+e.g az aks delete --name my-aks-cluster --resource-group my-Arrakis-rg --yes --no-wait
 ## Authors
 
 - [@misua](https://www.github.com/misua)
