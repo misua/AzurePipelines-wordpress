@@ -40,8 +40,8 @@ resource "kubernetes_service" "wordpress" {
   }
   depends_on = [
     azurerm_kubernetes_cluster.exampleAKScluster,
-    kubernetes_deployment.mysql,
     kubernetes_deployment.wordpress,
-
+    kubernetes_deployment.mysql,
+    
   ]
 }

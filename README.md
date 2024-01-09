@@ -8,7 +8,8 @@ This is an all Terraform to deploy the ff:
 - A pv & pvc inside the cluster
 - wordpress w/ volume_mounts and using pvc (for /var/www/html)
 - Mysql DB for wordpress deployment use
-- wordpress svc,mysql svc and ingress LB  
+- wordpress svc,mysql svc and ingress LB
+- Horizontal Pod autoscaling + Cluster autoscaling 
 - the azp-agent-in-docker/ - is a microsoft agent/runner,built by podman, as my request didnt get approved for parrallelism (required by azure pipelines)
 
 ---

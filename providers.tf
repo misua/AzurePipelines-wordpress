@@ -1,8 +1,9 @@
 provider "azurerm" {
-  subscription_id = "f33092cf-589asdfasdf03-d8b593463157"
-  tenant_id       = "f24ee086-08b3asdfasda6-73c78de1asdfbf"
-  client_id       = "ff329ea1-c93asdfasdfdf932831f"
-  client_secret   = "FLo8Q~xJD1wERqnwhdkfRflsdfsdfasNx36aIJ"
+ 
+  subscription_id = "f33092cf-589asdfasdf03-d8b593463157" #these are fakes
+  tenant_id       = "f24ee086-08b3asdfasda6-73c78de1asdfbf" #these are fakes
+  client_id       = "ff329ea1-c93asdfasdfdf932831f" #these are fakes
+  client_secret   = "FLo8Q~xJD1wERqnwhdkfRflsdfsdfasNx36aIJ"  #these are fakes
 
   features {}
 }
@@ -22,3 +23,4 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.example.kube_config[0].cluster_ca_certificate)
 
 }
+

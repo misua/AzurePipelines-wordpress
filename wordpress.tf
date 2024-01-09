@@ -9,13 +9,13 @@ resource "kubernetes_deployment" "wordpress" {
 
   spec {
     replicas = 1
-
+    
     selector {
       match_labels = {
         app = "wordpress"
       }
     }
-
+    
     template {
       metadata {
         labels = {
@@ -27,7 +27,7 @@ resource "kubernetes_deployment" "wordpress" {
         container {
           name  = "wordpress"
           image = "wordpress:latest"
-
+        
           env {
             name  = "WORDPRESS_DB_HOST"
             value = "mysqlservice"

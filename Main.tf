@@ -20,6 +20,7 @@ resource "azurerm_kubernetes_cluster" "exampleAKScluster" {
     min_count           = 1
     max_count           = 5
     vm_size             = "Standard_B2s"
+    #zones = ["1", "2", "3"] #added for testing 1 node in each zone
   }
 
   // Service principal configuration for AKS cluster
@@ -51,6 +52,28 @@ resource "kubernetes_horizontal_pod_autoscaler_v2" "example" {
       api_version = "apps/v2"
       kind        = "Deployment"
       name        = "MyApp"
+    }
+
+    metric {
+      type = "Resource"
+      resource {
+        name = "cpu"
+        target {
+          type = "Utilization"
+          average_utilization = 50
+        }
+      }
+    }
+
+    metric {
+      type = "Resource"
+      resource {
+        name = "cpu"
+        target {
+          type = "Utilization"
+          average_utilization = 50
+        }
+      }
     }
 
     behavior {
