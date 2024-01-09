@@ -1,4 +1,5 @@
 resource "kubernetes_deployment" "wordpress" {
+  wait_for_rollout = true
   metadata {
     name = "wordpress"
   }
@@ -26,7 +27,7 @@ resource "kubernetes_deployment" "wordpress" {
 
           env {
             name  = "WORDPRESS_DB_HOST"
-            value = data.external.mysql_host.result.host
+            value = var.WORDPRESS_DB_HOST
           }
 
           env {
@@ -47,7 +48,7 @@ resource "kubernetes_deployment" "wordpress" {
         volume {
           name = "wordpress-persistent-storage"
           persistent_volume_claim {
-            claim_name = kubernetes_persistent_volume_claim_v1.example.metadata[0].name
+            claim_name = "example-claim-name"
           }
 
         }
@@ -58,6 +59,7 @@ resource "kubernetes_deployment" "wordpress" {
 
 
   depends_on = [
+    azurerm_kubernetes_cluster.exampleAKScluster,
     kubernetes_persistent_volume_claim_v1.example,
     kubernetes_persistent_volume_v1.example
   ]

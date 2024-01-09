@@ -1,0 +1,65 @@
+FROM python:3.8-slim-buster
+
+RUN apt-get update && apt-get install -y \
+    curl git jq libicu63 wget unzip \
+    apt-transport-https \
+    lsb-release \
+    gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install kubectl
+ENV TARGETARCH="linux-x64"
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/${TARGETARCH}/kubectl" && \
+    install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
+    rm kubectl
+
+RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | apt-key add -
+RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/azure-cli.list
+
+RUN apt-get update && apt-get install azure-cli && rm -rf /var/lib/apt/lists/*
+
+# Install Pulumi
+#RUN curl -fsSL https://get.pulumi.com | sh
+#RUN curl -L -o pulumi.tar.gz https://get.pulumi.com/releases/sdk/pulumi-v3.13.2-linux-x64.tar.gz
+#RUN tar -xzf pulumi.tar.gz -C /root && \
+#    install -o root -g root -m 0755 /root/pulumi /usr/local/bin/pulumi
+#ENV PATH="/root/pulumi-v3.13.2-linux-x64:${PATH}"
+
+
+# Download Pulumi
+RUN curl -L -o pulumi.tar.gz https://get.pulumi.com/releases/sdk/pulumi-v3.100.0-linux-x64.tar.gz
+# Extract Pulumi
+RUN tar -xzf pulumi.tar.gz -C /root
+
+# List the contents of the extracted Pulumi directory
+#RUN ls -l /root/pulumi-v3.13.2-linux-x64
+
+# Install Pulumi
+RUN install -o root -g root -m 0755 /root/pulumi/pulumi /usr/local/bin/pulumi
+
+
+
+
+
+# Set up a virtual environment
+RUN python -m venv venv
+ENV PATH="/azp/venv/bin:$PATH"
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+WORKDIR /azp/
+
+COPY ./start.sh ./
+CMD ["bash"]
+
+RUN chmod +x ./start.sh
+
+RUN useradd -m agent
+RUN chown agent ./
+USER agent
+# Another option is to run the agent as root.
+ENV AGENT_ALLOW_RUNASROOT="true"
+
+ENTRYPOINT ./start.sh

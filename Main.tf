@@ -1,11 +1,12 @@
 // Resource group creation
 resource "azurerm_resource_group" "Arrakis" {
-  name     = "my-resource-group"
+  name     = "my-Arrakis-rg"
   location = "eastus"
 }
 
 // Azure Kubernetes Service (AKS) cluster creation
 resource "azurerm_kubernetes_cluster" "exampleAKScluster" {
+ 
   name                = "my-aks-cluster"
   location            = azurerm_resource_group.Arrakis.location
   resource_group_name = azurerm_resource_group.Arrakis.name
@@ -43,8 +44,8 @@ resource "kubernetes_horizontal_pod_autoscaler_v2" "example" {
   }
 
   spec {
-    min_replicas = 50
-    max_replicas = 100
+    min_replicas = 5
+    max_replicas = 10
 
     scale_target_ref {
       api_version = "apps/v2"
@@ -84,5 +85,6 @@ resource "kubernetes_horizontal_pod_autoscaler_v2" "example" {
       }
     }
   }
+  depends_on = [azurerm_kubernetes_cluster.exampleAKScluster]
 }
 
