@@ -7,23 +7,18 @@ This is an all Terraform to deploy the ff:
 - New AKS cluster
 - A pv & pvc inside the cluster
 - wordpress w/ volume_mounts and using pvc (for /var/www/html)
-- Mysql that can be used by wordpress deployment
-- wordpress svc and ingress
+- Mysql DB for wordpress deployment use
+- wordpress svc,mysql svc and ingress LB
 ---  
 
 
-Stages: deploy_ingress & deploy_wordpress will only deploy if the ff conditions are met:
-
-- AKS cluster deployed
-- pv & pvc created,claimed and bounded
-- mysql has been deployed
 
 
-`replace credentials in provider.tf using your own`
+```replace credentials in provider.tf using your own```
 
 
 
-``created a pulumi based IAC that functions the same if not better``
+
 ---
 
 ## Authors
