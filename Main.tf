@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "Arrakis" {
 
 // Azure Kubernetes Service (AKS) cluster creation
 resource "azurerm_kubernetes_cluster" "exampleAKScluster" {
- 
+
   name                = "my-aks-cluster"
   location            = azurerm_resource_group.Arrakis.location
   resource_group_name = azurerm_resource_group.Arrakis.name

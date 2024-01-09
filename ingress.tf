@@ -1,26 +1,23 @@
-resource "kubernetes_service_v1" "example" {
+resource "kubernetes_service" "wpLB" {
   metadata {
-    name = "ingress-service"
+    name = "wploadbalancer"
   }
   spec {
-    port {
-      port        = 80
-      target_port = 80
-      protocol    = "TCP"
-    }
     selector = {
       app = "wordpress"
     }
-    session_affinity = "ClientIP"
-    type             = "NodePort"
+
+    port {
+      port        = 80
+      target_port = 80
+    }
+    type = "LoadBalancer"
   }
-  depends_on = [
-    azurerm_kubernetes_cluster.exampleAKScluster
-  ]
 }
 
+
 resource "kubernetes_ingress_v1" "example" {
-  wait_for_load_balancer = true
+  # wait_for_load_balancer = true
   metadata {
     name = "example"
   }
@@ -32,7 +29,7 @@ resource "kubernetes_ingress_v1" "example" {
           path = "/*"
           backend {
             service {
-              name = kubernetes_service_v1.example.metadata.0.name
+              name = kubernetes_service.wordpress.metadata.0.name
               port {
                 number = 80
               }
@@ -49,11 +46,11 @@ resource "kubernetes_ingress_v1" "example" {
 }
 
 # Display load balancer hostname (typically present in AWS)
-output "load_balancer_hostname" {
-  value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.hostname
-}
+# output "load_balancer_hostname" {
+#   value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.hostname
+# }
 
 # Display load balancer IP (typically present in GCP, or using Nginx ingress controller)
-output "load_balancer_ip" {
-  value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.ip
-}
+# output "load_balancer_ip" {
+#   value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.ip
+# }

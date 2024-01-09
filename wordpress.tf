@@ -3,6 +3,9 @@ resource "kubernetes_deployment" "wordpress" {
   metadata {
     name = "wordpress"
   }
+  timeouts {
+    create = "30m"
+  }
 
   spec {
     replicas = 1
@@ -27,13 +30,24 @@ resource "kubernetes_deployment" "wordpress" {
 
           env {
             name  = "WORDPRESS_DB_HOST"
-            value = var.WORDPRESS_DB_HOST
+            value = "mysqlservice"
+          }
+          env {
+            name  = "WORDPRESS_DB_USER"
+            value = "root"
           }
 
           env {
-            name  = "WORDPRESS_DB_PASSWORD"
-            value = var.WORDPRESS_DB_PASSWORD
+            name = "WORDPRESS_DB_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = "mysql-root-secret" // use secret for root password
+                key  = "password"
+              }
+            }
           }
+
+
 
           port {
             container_port = 80
@@ -48,7 +62,7 @@ resource "kubernetes_deployment" "wordpress" {
         volume {
           name = "wordpress-persistent-storage"
           persistent_volume_claim {
-            claim_name = "example-claim-name"
+            claim_name = "pvc"
           }
 
         }
@@ -56,11 +70,8 @@ resource "kubernetes_deployment" "wordpress" {
     }
   }
 
-
-
   depends_on = [
     azurerm_kubernetes_cluster.exampleAKScluster,
-    kubernetes_persistent_volume_claim_v1.example,
-    kubernetes_persistent_volume_v1.example
+    kubernetes_persistent_volume_claim_v1.pvc,
   ]
 }
