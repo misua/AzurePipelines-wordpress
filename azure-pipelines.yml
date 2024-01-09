@@ -1,0 +1,75 @@
+trigger: main
+pool:
+  vmImage: ubuntu-latest
+parameters:
+  - name: ArrakisRG
+    type: string
+    default: 'Arrakis'
+  # storage acct name
+  - name: spiceSTG
+    type: string
+    default: 'spice_1704508731576'
+  # container name
+  - name: container
+    type: string
+    default: 'tfstate'
+  # tfstate file name
+  - name: key
+    type: string
+    default: terraform.dev.tfstate
+stages:
+  - stage: InitPlan
+    displayName: InitPlan
+    jobs:
+      - job:
+        pool:
+          name: 'Default'
+        continueOnError: False
+        steps:
+          - task: TerraformTaskV4@4
+            displayName: terraform init & plan
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'Azure subscription 1(f33092cf-589f-4378-8f03-d8b593463157)'
+              backendAzureRmResourceGroupName: ${{ parameters.ArrakisRG }}
+              backendAzureRmStorageAccountName: ${{ parameters.spiceSTG }}
+              backendAzureRmContainerName: ${{ parameters.container }}
+              backendAzureRmKey: ${{ parameters.key }}
+          - task: TerraformTaskV4@4
+            displayName: terraform validate
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+          - task: TerraformTaskV4@4
+            displayName: terraform plan
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: 'Azure subscription 1(f33092cf-589f-4378-8f03-d8b593463157)'
+          
+  - stage: Apply
+    displayName: ApplyPlan
+    jobs:
+      - job:
+        pool:
+          name: 'Default'
+        continueOnError: False
+        steps:
+          - task: TerraformTaskV4@4
+            displayName: terraform init again
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'Azure subscription 1(f33092cf-589f-4378-8f03-d8b593463157)'
+              backendAzureRmResourceGroupName: ${{ parameters.ArrakisRG }}
+              backendAzureRmStorageAccountName: ${{ parameters.spiceSTG }}
+              backendAzureRmContainerName: ${{ parameters.container }}
+              backendAzureRmKey: ${{ parameters.key }}
+          - task: TerraformTaskV4@4
+            displayName: terraform apply
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              commandOptions: '-parallelism=20'
+              environmentServiceNameAzureRM: 'Azure subscription 1(f33092cf-589f-4378-8f03-d8b593463157)'

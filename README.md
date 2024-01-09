@@ -17,7 +17,9 @@ This is an all Terraform to deploy the ff:
 ```replace credentials in provider.tf using your own```
 
 
-
+```build dockerfile```
+- podman build -t "azp-agent:linux1" --file "azp-agent.linux.dockerfile" .
+- podman run -e AZP_URL="https://dev.azure.com/charlice/" -e AZP_TOKEN="mjtwprakc7g4ca2xbvoiof4se42m222kgeesdxxxrraq2kcr2u6q" -e AZP_POOL="Default" -e AZP_AGENT_NAME="Docker Agent - Linux" --name "azp-agent-linux1" azp-agent:linux1
 
 ---
 
