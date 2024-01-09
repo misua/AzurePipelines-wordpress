@@ -37,14 +37,18 @@ resource "kubernetes_deployment" "wordpress" {
             value = "root"
           }
 
+          # env {
+          #   name = "WORDPRESS_DB_PASSWORD"
+          #   value_from {
+          #     secret_key_ref {
+          #       name = "mysql-root-secret" // use secret for root password
+          #       key  = "password"
+          #     }
+          #   }
+          # }
           env {
-            name = "WORDPRESS_DB_PASSWORD"
-            value_from {
-              secret_key_ref {
-                name = "mysql-root-secret" // use secret for root password
-                key  = "password"
-              }
-            }
+            name  = "WORDPRESS_DB_PASSWORD"
+            value = "tobolz"
           }
 
 

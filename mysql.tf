@@ -25,20 +25,31 @@ resource "kubernetes_deployment" "mysql" {
           name  = "mysql"
           image = "mysql:latest"
 
-          env {
-            name  = "MYSQL_ROOT_PASSWORD"
-            value = "tobolz"
-          }
 
           env {
             name  = "MYSQL_USER"
             value = "tobolz"
           }
+          # env {
+          #   name = "MYSQL_ROOT_PASSWORD"
+          #   value_from {
+          #     secret_key_ref {
+          #       name = "mysql-root-secret" // use secret for root password
+          #       key  = "password"
+          #     }
+          #   }
+          # }
 
           env {
             name  = "MYSQL_PASSWORD"
             value = "tobolz"
           }
+
+          env {
+            name  = "MYSQL_ROOT_PASSWORD"
+            value = "tobolz"
+          }
+
 
           env {
             name  = "MYSQL_DATABASE"
