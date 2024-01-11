@@ -1,10 +1,17 @@
-provider "azurerm" {
- 
-  subscription_id = "f33092cf-589asdfasdf03-d8b593463157" #these are fakes
-  tenant_id       = "f24ee086-08b3asdfasda6-73c78de1asdfbf" #these are fakes
-  client_id       = "ff329ea1-c93asdfasdfdf932831f" #these are fakes
-  client_secret   = "FLo8Q~xJD1wERqnwhdkfRflsdfsdfasNx36aIJ"  #these are fakes
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "Arrakis"
+    storage_account_name = "spice"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  }
+}
 
+provider "azurerm" {
+  subscription_id = "f33092cf-589f-4378-8f03-d8b593463157"
+  tenant_id       = "f24ee086-08b3-4f71-bba6-73c78de16bbf"
+  client_id       = "ff329ea1-c934-4ef8-9fee-4f7df932831f"
+  client_secret   = "FLo8Q~xJD1wERqnwhdkfRflOP0jdQ7rAKNx36aIJ"
   features {}
 }
 
@@ -13,14 +20,24 @@ data "azurerm_kubernetes_cluster" "example" {
   resource_group_name = azurerm_resource_group.Arrakis.name
 }
 
-
 provider "kubernetes" {
+  alias = "aks"
   host                   = data.azurerm_kubernetes_cluster.example.kube_config[0].host
   username               = data.azurerm_kubernetes_cluster.example.kube_config[0].username
   password               = data.azurerm_kubernetes_cluster.example.kube_config[0].password
   client_certificate     = base64decode(data.azurerm_kubernetes_cluster.example.kube_config[0].client_certificate)
   client_key             = base64decode(data.azurerm_kubernetes_cluster.example.kube_config[0].client_key)
   cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.example.kube_config[0].cluster_ca_certificate)
-
 }
 
+resource "kubernetes_namespace" "arrakisNS" {
+  metadata {
+    name = "arrakis-namespace"
+  }
+
+  provider = kubernetes.aks
+
+  depends_on = [
+    azurerm_kubernetes_cluster.exampleAKScluster
+  ]
+}

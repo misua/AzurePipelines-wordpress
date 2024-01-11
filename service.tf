@@ -42,6 +42,6 @@ resource "kubernetes_service" "wordpress" {
     azurerm_kubernetes_cluster.exampleAKScluster,
     kubernetes_deployment.wordpress,
     kubernetes_deployment.mysql,
-    
+
   ]
 }

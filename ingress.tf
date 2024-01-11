@@ -1,4 +1,5 @@
 resource "kubernetes_service" "wpLB" {
+  provider = kubernetes.aks #boysit
   metadata {
     name = "wploadbalancer"
   }

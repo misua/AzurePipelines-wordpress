@@ -20,6 +20,7 @@ resource "azurerm_kubernetes_cluster" "exampleAKScluster" {
     min_count           = 1
     max_count           = 5
     vm_size             = "Standard_B2s"
+
     #zones = ["1", "2", "3"] #added for testing 1 node in each zone
   }
 
@@ -40,6 +41,7 @@ resource "local_file" "kubeconfig" {
 }
 
 resource "kubernetes_horizontal_pod_autoscaler_v2" "example" {
+  provider = kubernetes.aks #boysit
   metadata {
     name = "test"
   }
@@ -59,7 +61,7 @@ resource "kubernetes_horizontal_pod_autoscaler_v2" "example" {
       resource {
         name = "cpu"
         target {
-          type = "Utilization"
+          type                = "Utilization"
           average_utilization = 50
         }
       }
@@ -70,7 +72,7 @@ resource "kubernetes_horizontal_pod_autoscaler_v2" "example" {
       resource {
         name = "cpu"
         target {
-          type = "Utilization"
+          type                = "Utilization"
           average_utilization = 50
         }
       }

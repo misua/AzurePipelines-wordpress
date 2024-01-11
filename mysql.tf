@@ -1,4 +1,5 @@
 resource "kubernetes_deployment" "mysql" {
+  provider = kubernetes.aks #boysit
   wait_for_rollout = true
   metadata {
     name = "mysql"
