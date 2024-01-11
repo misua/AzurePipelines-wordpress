@@ -8,10 +8,11 @@ terraform {
 }
 
 provider "azurerm" {
-  subscription_id = "f33092cf-589f-4378-8f03-d8b593463157"
-  tenant_id       = "f24ee086-08b3-4f71-bba6-73c78de16bbf"
-  client_id       = "ff329ea1-c934-4ef8-9fee-4f7df932831f"
-  client_secret   = "FLo8Q~xJD1wERqnwhdkfRflOP0jdQ7rAKNx36aIJ"
+  subscription_id = "f33092cf-589asdfasdf03-d8b593463157" #these are fakes
+  tenant_id       = "f24ee086-08b3asdfasda6-73c78de1asdfbf" #these are fakes
+  client_id       = "ff329ea1-c93asdfasdfdf932831f" #these are fakes
+  client_secret   = "FLo8Q~xJD1wERqnwhdkfRflsdfsdfasNx36aIJ"  #these are fakes
+
   features {}
 }
 
@@ -30,14 +31,14 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.example.kube_config[0].cluster_ca_certificate)
 }
 
-resource "kubernetes_namespace" "arrakisNS" {
-  metadata {
-    name = "arrakis-namespace"
-  }
+# resource "kubernetes_namespace" "arrakisNS" {
+#   metadata {
+#     name = "arrakis-namespace"
+#   }
 
-  provider = kubernetes.aks
+#   provider = kubernetes.aks
 
-  depends_on = [
-    azurerm_kubernetes_cluster.exampleAKScluster
-  ]
-}
+#   depends_on = [
+#     azurerm_kubernetes_cluster.exampleAKScluster
+#   ]
+# }
