@@ -5,7 +5,7 @@
 This is an all Terraform to deploy the ff:
 
 
-- Deploys new AKS cluster into 2 zones
+- Deploys a new AKS on 2 diff zones(1 node-1pod each zone)
 - A pv & pvc inside the cluster
 - wordpress w/ volume_mounts and using pvc (for /var/www/html)
 - Mysql DB for wordpress deployment use
