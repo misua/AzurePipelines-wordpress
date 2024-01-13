@@ -32,6 +32,7 @@ e.g az aks delete --name my-aks-cluster --resource-group my-Arrakis-rg --yes --n
 TODO
 - add metrics integration like prometheus+grafana
 - should probably use key vault or better password mgmt system.
+- more code cleanup and using variables 
 
 ## Authors
 
