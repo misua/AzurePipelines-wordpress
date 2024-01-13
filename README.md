@@ -27,7 +27,7 @@ This is an all Terraform to deploy the ff:
 
 ``az aks delete --name myAKSCluster --resource-group myResourceGroup --yes --no-wait``
 
-e.g az aks delete --name my-aks-cluster --resource-group my-Arrakis-rg --yes --no-wait
+---
 
 TODO
 - add metrics integration like prometheus+grafana
