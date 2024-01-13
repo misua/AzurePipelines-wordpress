@@ -1,10 +1,13 @@
 
 # Project - House Atreides
 
+<a href="https://terraform.io">
+    <img src=".github/tf.png" alt="Terraform logo" title="Terraform" align="left" height="50" />
+</a>
 This is an all Terraform to deploy the ff:
 
 
-- New AKS cluster
+- Deploys new AKS cluster into 2 zones
 - A pv & pvc inside the cluster
 - wordpress w/ volume_mounts and using pvc (for /var/www/html)
 - Mysql DB for wordpress deployment use
