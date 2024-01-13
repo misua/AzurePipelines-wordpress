@@ -1,9 +1,7 @@
 
 # Project - House Atreides
 
-<a href="https://terraform.io">
-    <img src=".github/tf.png" alt="Terraform logo" title="Terraform" align="left" height="50" />
-</a>
+
 This is an all Terraform to deploy the ff:
 
 
