@@ -30,6 +30,9 @@ This is an all Terraform to deploy the ff:
 e.g az aks delete --name my-aks-cluster --resource-group my-Arrakis-rg --yes --no-wait
 
 TODO
+- add metrics integration like prometheus+grafana
+- should probably use key vault or better password mgmt system.
+
 ## Authors
 
 - [@misua](https://www.github.com/misua)
