@@ -1,4 +1,5 @@
 resource "kubernetes_service" "mysql" {
+  provider = kubernetes.aks #boysit
   metadata {
     name = "mysqlservice"
   }
@@ -23,6 +24,7 @@ resource "kubernetes_service" "mysql" {
 }
 
 resource "kubernetes_service" "wordpress" {
+  provider = kubernetes.aks #boysit
   metadata {
     name = "wordpress"
   }

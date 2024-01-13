@@ -23,6 +23,7 @@ provider "azurerm" {
   client_id       = "ff329ea1-c93asdfasdfdf932831f" #these are fakes
   client_secret   = "FLo8Q~xJD1wERqnwhdkfRflsdfsdfasNx36aIJ"  #these are fakes
 
+
   features {}
 }
 

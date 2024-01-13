@@ -1,6 +1,14 @@
 trigger: none
 pool:
   vmImage: ubuntu-latest
+
+steps:
+- checkout: self
+  displayName: 'CHECKOUT REPO'
+  persistCredentials: true
+  clean: true
+  fetchDepth: 1
+
 parameters:
   - name: Arrakis
     type: string
@@ -17,7 +25,8 @@ parameters:
   - name: key
     type: string
     default: terraform.tfstate
-stages:
+
+stages:  # This line should be at the same indentation level as 'steps:' and 'parameters:'
   - stage: InitPlan
     displayName: InitPlan
     jobs:
@@ -63,7 +72,7 @@ stages:
               environmentServiceNameAzureRM: 'Azure subscription 1(f33092cf-589f-4378-8f03-d8b593463157)'
           
   - stage: Apply
-    displayName: APPLY
+    displayName: 'FINAL APPLY'
     jobs:
       - job:
         displayName: FINAL
@@ -72,7 +81,7 @@ stages:
         continueOnError: False
         steps:
           - task: TerraformTaskV4@4
-            displayName: FINAL INIT
+            displayName: 'FINAL INIT'
             inputs:
               provider: 'azurerm'
               command: 'init'
@@ -82,7 +91,7 @@ stages:
               backendAzureRmContainerName: ${{ parameters.container }}
               backendAzureRmKey: ${{ parameters.key }}
           - task: TerraformTaskV4@4
-            displayName: FINAL APPLY
+            displayName: 'FINAL APPLY'
             inputs:
               provider: 'azurerm'
               command: 'apply'

@@ -15,7 +15,7 @@ resource "azurerm_kubernetes_cluster" "exampleAKScluster" {
   // Default node pool configuration
   default_node_pool {
     name                = "default"
-    node_count          = 1
+    node_count          = 3
     enable_auto_scaling = true
     min_count           = 1
     max_count           = 5

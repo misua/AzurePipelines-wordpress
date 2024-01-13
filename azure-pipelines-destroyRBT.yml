@@ -20,7 +20,7 @@ parameters:
 
 stages:
   - stage: Destroy
-    displayName: DestroyResources
+    displayName: 'DESTROY RESOURCES'
     jobs:
       - job:
         pool:
@@ -28,7 +28,7 @@ stages:
         continueOnError: False
         steps:
           - task: TerraformTaskV4@4
-            displayName: terraform init for destroy
+            displayName: 'INIT'
             inputs:
               provider: 'azurerm'
               command: 'init'
@@ -38,7 +38,7 @@ stages:
               backendAzureRmContainerName: ${{ parameters.container }}
               backendAzureRmKey: ${{ parameters.key }}
           - task: TerraformTaskV4@4
-            displayName: terraform destroy
+            displayName: 'DESTROY'
             inputs:
               provider: 'azurerm'
               command: 'destroy'
