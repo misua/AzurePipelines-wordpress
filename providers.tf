@@ -7,7 +7,17 @@ terraform {
   }
 }
 
+terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "=3.0.1"
+    }
+  }
+}
+
 provider "azurerm" {
+
   subscription_id = "f33092cf-589asdfasdf03-d8b593463157" #these are fakes
   tenant_id       = "f24ee086-08b3asdfasda6-73c78de1asdfbf" #these are fakes
   client_id       = "ff329ea1-c93asdfasdfdf932831f" #these are fakes

@@ -20,6 +20,7 @@ resource "azurerm_kubernetes_cluster" "exampleAKScluster" {
     min_count           = 1
     max_count           = 5
     vm_size             = "Standard_B2s"
+    zones = [ "1", "2", "3" ]
 
     #zones = ["1", "2", "3"] #added for testing 1 node in each zone
   }

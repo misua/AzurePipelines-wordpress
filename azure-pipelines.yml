@@ -1,14 +1,14 @@
-trigger: main
+trigger: none
 pool:
   vmImage: ubuntu-latest
 parameters:
-  - name: ArrakisRG
+  - name: Arrakis
     type: string
     default: 'Arrakis'
   # storage acct name
-  - name: spiceSTG
+  - name: spice
     type: string
-    default: 'spice_1704508731576'
+    default: 'spice'
   # container name
   - name: container
     type: string
@@ -16,60 +16,75 @@ parameters:
   # tfstate file name
   - name: key
     type: string
-    default: terraform.dev.tfstate
+    default: terraform.tfstate
 stages:
   - stage: InitPlan
     displayName: InitPlan
     jobs:
       - job:
+        displayName: 'I HAVE NO JOB'
         pool:
           name: 'Default'
         continueOnError: False
         steps:
           - task: TerraformTaskV4@4
-            displayName: terraform init & plan
+            displayName: INIT & PLAN
             inputs:
               provider: 'azurerm'
               command: 'init'
               backendServiceArm: 'Azure subscription 1(f33092cf-589f-4378-8f03-d8b593463157)'
-              backendAzureRmResourceGroupName: ${{ parameters.ArrakisRG }}
-              backendAzureRmStorageAccountName: ${{ parameters.spiceSTG }}
+              backendAzureRmResourceGroupName: ${{ parameters.Arrakis }}
+              backendAzureRmStorageAccountName: ${{ parameters.spice }}
               backendAzureRmContainerName: ${{ parameters.container }}
               backendAzureRmKey: ${{ parameters.key }}
           - task: TerraformTaskV4@4
-            displayName: terraform validate
+            displayName: UPGRADE
+            inputs:
+              provider: 'azurerm'
+              displayname: init upgrade
+              command: 'init'
+              commandOptions: '-upgrade'
+              backendServiceArm: 'Azure subscription 1(f33092cf-589f-4378-8f03-d8b593463157)'
+              backendAzureRmResourceGroupName: ${{ parameters.Arrakis }}
+              backendAzureRmStorageAccountName: ${{ parameters.spice }}
+              backendAzureRmContainerName: ${{ parameters.container }}
+              backendAzureRmKey: ${{ parameters.key }}
+          - task: TerraformTaskV4@4
+            displayName: VALIDATE
             inputs:
               provider: 'azurerm'
               command: 'validate'
           - task: TerraformTaskV4@4
-            displayName: terraform plan
+            displayName: PLAN
             inputs:
               provider: 'azurerm'
               command: 'plan'
+              commandOptions: '-lock=false'
               environmentServiceNameAzureRM: 'Azure subscription 1(f33092cf-589f-4378-8f03-d8b593463157)'
           
   - stage: Apply
-    displayName: ApplyPlan
+    displayName: APPLY
     jobs:
       - job:
+        displayName: FINAL
         pool:
           name: 'Default'
         continueOnError: False
         steps:
           - task: TerraformTaskV4@4
-            displayName: terraform init again
+            displayName: FINAL INIT
             inputs:
               provider: 'azurerm'
               command: 'init'
               backendServiceArm: 'Azure subscription 1(f33092cf-589f-4378-8f03-d8b593463157)'
-              backendAzureRmResourceGroupName: ${{ parameters.ArrakisRG }}
-              backendAzureRmStorageAccountName: ${{ parameters.spiceSTG }}
+              backendAzureRmResourceGroupName: ${{ parameters.Arrakis }}
+              backendAzureRmStorageAccountName: ${{ parameters.spice }}
               backendAzureRmContainerName: ${{ parameters.container }}
               backendAzureRmKey: ${{ parameters.key }}
           - task: TerraformTaskV4@4
-            displayName: terraform apply
+            displayName: FINAL APPLY
             inputs:
               provider: 'azurerm'
               command: 'apply'
-              commandOptions: '-parallelism=20'
+              commandOptions: '-parallelism=20 -lock=false'
               environmentServiceNameAzureRM: 'Azure subscription 1(f33092cf-589f-4378-8f03-d8b593463157)'

@@ -1,4 +1,5 @@
 resource "kubernetes_storage_class" "storage-class" {
+  provider = kubernetes.aks
   metadata {
     name = "storageclass"
   }
