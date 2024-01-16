@@ -34,7 +34,8 @@ TODO
 - should probably use key vault or better password mgmt system.
 - more code cleanup and using variables 
 - added details on adding tls (in ingress.tf)
-- added details on how to deploy wordpress with isolation on diff namespace
+- added details on how to deploy wordpress(multitenant) with isolation on diff namespace
+- adding notes.txt for notes on how to add overlay cilium network and how to implement network policy (by default if enabled will have 'deny all' policy, you need to explicitly allow it or wordpress will fail to connect to mysql db )
 
 ## Authors
 
