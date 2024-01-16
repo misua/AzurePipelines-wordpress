@@ -114,3 +114,20 @@ resource "kubernetes_horizontal_pod_autoscaler_v2" "example" {
   depends_on = [azurerm_kubernetes_cluster.exampleAKScluster]
 }
 
+# to create namespace
+
+# provider "kubernetes" {
+#   config_path = "kubeconfig" # Path to the kubeconfig file
+# }
+
+# resource "kubernetes_namespace" "namespace1" {
+#   metadata {
+#     name = "namespace1"
+#   }
+# }
+
+# resource "kubernetes_namespace" "namespace2" {
+#   metadata {
+#     name = "namespace2"
+#   }
+# }

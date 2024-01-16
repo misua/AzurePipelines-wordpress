@@ -16,6 +16,7 @@ resource "kubernetes_storage_class" "storage-class" {
 resource "kubernetes_persistent_volume_claim_v1" "pvc" {
   metadata {
     name = "pvc"
+    # namespace = "example-namespace" # to create a pvc in a specific namespace
   }
   timeouts {
     create = "30m"

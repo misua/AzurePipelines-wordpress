@@ -2,6 +2,7 @@ resource "kubernetes_deployment" "wordpress" {
   wait_for_rollout = true
   metadata {
     name = "wordpress"
+     namespace = "my-namespace"  # Add this line for namespaced deployment
   }
   timeouts {
     create = "30m"
