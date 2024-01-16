@@ -34,7 +34,7 @@ TODO
 - should probably use key vault or better password mgmt system.
 - more code cleanup and using variables 
 - added details on adding tls (in ingress.tf)
-- added details on how to 
+- added details on how to deploy wordpress with isolation on diff namespace
 
 ## Authors
 
